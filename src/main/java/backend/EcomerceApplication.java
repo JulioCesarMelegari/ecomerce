@@ -9,27 +9,34 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import backend.domain.Categoria;
 import backend.domain.Cidade;
+import backend.domain.Cliente;
+import backend.domain.Endereco;
 import backend.domain.Estado;
 import backend.domain.Produto;
+import backend.domain.enums.TipoCliente;
 import backend.repositories.CategoriaRepository;
 import backend.repositories.CidadeRepository;
+import backend.repositories.ClienteRepository;
+import backend.repositories.EnderecoRepository;
 import backend.repositories.EstadoRepository;
 import backend.repositories.ProdutoRepository;
+import ch.qos.logback.core.joran.event.stax.EndEvent;
 
 @SpringBootApplication
 public class EcomerceApplication implements CommandLineRunner{
 	
 	@Autowired
 	private CategoriaRepository categoriaRepository;
-	
 	@Autowired
 	private ProdutoRepository produtoRepository;
-	
 	@Autowired
 	private CidadeRepository cidadeRepository;
-	
 	@Autowired
 	private EstadoRepository estadoRepository;
+	@Autowired
+	private ClienteRepository clienteRepository;
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(EcomerceApplication.class, args);
@@ -71,7 +78,16 @@ public class EcomerceApplication implements CommandLineRunner{
 		estadoRepository.saveAll(Arrays.asList(est1,est2));
 		cidadeRepository.saveAll(Arrays.asList(c1,c2,c3));
 		
+		Cliente cli1 = new Cliente(null, "cliente1", "cliente1@gmail", "458545", TipoCliente.PESSOAFISICA);
+		cli1.getTelefones().addAll(Arrays.asList("1245","69656"));
 		
+		Endereco e1 = new Endereco(null, "Rua 1", "45", "casa 56", "Alameda", "4555", cli1, c3);
+		Endereco e2 = new Endereco(null, "Rua 2", "4s5", "ap 6", "Frances", "435", cli1, c1);
+		
+		cli1.getEnderecos().addAll(Arrays.asList(e1,e2));
+		
+		clienteRepository.saveAll(Arrays.asList(cli1));
+		enderecoRepository.saveAll(Arrays.asList(e1,e2));
 		
 	}
 
