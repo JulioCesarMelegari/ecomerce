@@ -2,6 +2,8 @@ package backend.domain;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,6 +35,7 @@ public class Endereco  implements Serializable{
 	private String bairro;
 	private String cep;
 	
+	@JsonBackReference //protecao contra referencia ciclica
 	@ManyToOne
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;

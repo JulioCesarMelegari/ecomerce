@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import backend.domain.enums.TipoCliente;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.ElementCollection;
@@ -34,6 +36,7 @@ public class Cliente  implements Serializable{
 	//internamente será armazenado integer, externamente string
 	private Integer tipo;
 	
+	@JsonManagedReference //proteção contra referencia ciclica json
 	@OneToMany(mappedBy = "cliente")
 	private List<Endereco> enderecos = new ArrayList<>();
 	
