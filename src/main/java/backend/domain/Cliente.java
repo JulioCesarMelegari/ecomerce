@@ -44,6 +44,9 @@ public class Cliente  implements Serializable{
 	@ElementCollection // jpa cria tabela da entidade fraca
 	@CollectionTable(name = "TELEFONE") //nome da tabela no banco
 	private Set<String> telefones = new HashSet<>();
+	
+	@OneToMany(mappedBy = "cliente")
+	private List<Pedido> pedidos = new ArrayList<>();
 
 	//construtor sem as listas
 	public Cliente(Integer id, String nome, String email, String cpfouCnpj, TipoCliente tipo) {
@@ -110,6 +113,14 @@ public class Cliente  implements Serializable{
 
 	public void setTelefones(Set<String> telefones) {
 		this.telefones = telefones;
+	}
+
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
 	}
 	
 }

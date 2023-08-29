@@ -1,5 +1,7 @@
 package backend;
 
+import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,15 +14,21 @@ import backend.domain.Cidade;
 import backend.domain.Cliente;
 import backend.domain.Endereco;
 import backend.domain.Estado;
+import backend.domain.Pagamento;
+import backend.domain.PagamentoComBoleto;
+import backend.domain.PagamentoComCartao;
+import backend.domain.Pedido;
 import backend.domain.Produto;
+import backend.domain.enums.EstadoPagamento;
 import backend.domain.enums.TipoCliente;
 import backend.repositories.CategoriaRepository;
 import backend.repositories.CidadeRepository;
 import backend.repositories.ClienteRepository;
 import backend.repositories.EnderecoRepository;
 import backend.repositories.EstadoRepository;
+import backend.repositories.PagamentoRepository;
+import backend.repositories.PedidoRepository;
 import backend.repositories.ProdutoRepository;
-import ch.qos.logback.core.joran.event.stax.EndEvent;
 
 @SpringBootApplication
 public class EcomerceApplication implements CommandLineRunner{
@@ -37,6 +45,10 @@ public class EcomerceApplication implements CommandLineRunner{
 	private ClienteRepository clienteRepository;
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+	@Autowired
+	private PedidoRepository pedidoRepository;
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(EcomerceApplication.class, args);
@@ -89,6 +101,21 @@ public class EcomerceApplication implements CommandLineRunner{
 		clienteRepository.saveAll(Arrays.asList(cli1));
 		enderecoRepository.saveAll(Arrays.asList(e1,e2));
 		
+		SimpleDateFormat data = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+		
+		Pedido ped1 = new Pedido(null, data.parse("28/08/2023 21:30"), cli1, e1);
+		Pedido ped2 = new Pedido(null, data.parse("15/05/2023 21:30"), cli1, e2);
+		
+		Pagamento pgto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
+		ped1.setPagamento(pgto1);
+		
+		Pagamento pgto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2,data.parse("03/08/2023 22:30"), null);
+		ped2.setPagamento(pgto2);
+		
+		cli1.getPedidos().addAll(Arrays.asList(ped1,ped2));
+		
+		pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
+		pagamentoRepository.saveAll(Arrays.asList(pgto1,pgto2));
 	}
 
 }
