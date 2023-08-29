@@ -14,6 +14,7 @@ import backend.domain.Cidade;
 import backend.domain.Cliente;
 import backend.domain.Endereco;
 import backend.domain.Estado;
+import backend.domain.ItemPedido;
 import backend.domain.Pagamento;
 import backend.domain.PagamentoComBoleto;
 import backend.domain.PagamentoComCartao;
@@ -26,6 +27,7 @@ import backend.repositories.CidadeRepository;
 import backend.repositories.ClienteRepository;
 import backend.repositories.EnderecoRepository;
 import backend.repositories.EstadoRepository;
+import backend.repositories.ItemPedidoRepository;
 import backend.repositories.PagamentoRepository;
 import backend.repositories.PedidoRepository;
 import backend.repositories.ProdutoRepository;
@@ -49,6 +51,8 @@ public class EcomerceApplication implements CommandLineRunner{
 	private PedidoRepository pedidoRepository;
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(EcomerceApplication.class, args);
@@ -116,6 +120,21 @@ public class EcomerceApplication implements CommandLineRunner{
 		
 		pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pgto1,pgto2));
+		
+		ItemPedido ip1 = new ItemPedido(ped1, produto1, 0.00, 1, 200.00);
+		ItemPedido ip2 = new ItemPedido(ped1, produto3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, produto2, 100.00, 1, 800.00);
+		
+		ped1.getItens().addAll(Arrays.asList(ip1,ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		
+		produto1.getItens().addAll(Arrays.asList(ip1));
+		produto2.getItens().addAll(Arrays.asList(ip3));
+		produto3.getItens().addAll(Arrays.asList(ip2));
+		
+		itemPedidoRepository.saveAll(Arrays.asList(ip1,ip2,ip3));
+		
+		
 	}
 
 }
