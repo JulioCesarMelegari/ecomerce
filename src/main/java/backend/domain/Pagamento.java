@@ -2,6 +2,7 @@ package backend.domain;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import backend.domain.enums.EstadoPagamento;
 import jakarta.persistence.Entity;
@@ -28,6 +29,7 @@ public abstract class Pagamento implements Serializable{
 	
 	private Integer estado;
 	
+	@JsonBackReference //nao serializa
 	@OneToOne
 	@JoinColumn(name = "pedido_id")
 	@MapsId //garante que o id do pagamento seja o mesmo do pedido

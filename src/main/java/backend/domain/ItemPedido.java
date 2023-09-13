@@ -2,6 +2,8 @@ package backend.domain;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import lombok.EqualsAndHashCode;
@@ -17,6 +19,7 @@ import lombok.Setter;
 public class ItemPedido implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
+	@JsonIgnore //não será serializado (nao serializa pedido nem produto)
 	@EqualsAndHashCode.Include
 	@EmbeddedId
 	private ItemPedidoPK id = new ItemPedidoPK();
@@ -34,6 +37,7 @@ public class ItemPedido implements Serializable{
 		this.preco = preco;
 	}
 	
+	@JsonIgnore
 	public Pedido getPedido() {
 		return id.getPedido();
 	}

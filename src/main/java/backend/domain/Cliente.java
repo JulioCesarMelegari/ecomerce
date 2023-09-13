@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import backend.domain.enums.TipoCliente;
@@ -45,6 +46,7 @@ public class Cliente  implements Serializable{
 	@CollectionTable(name = "TELEFONE") //nome da tabela no banco
 	private Set<String> telefones = new HashSet<>();
 	
+	@JsonBackReference //os pedidos do cliente nao serao serializados (protecao ciclica json)
 	@OneToMany(mappedBy = "cliente")
 	private List<Pedido> pedidos = new ArrayList<>();
 
